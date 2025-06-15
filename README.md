@@ -1,8 +1,8 @@
-# 🚀 ShortnerCutUrl
+# 🚀 Erdl
 
 ## 📄 Descripción
 
-ShortnerCutUrl es una aplicación para acortar URLs desarrollada con Node.js, Express y TypeScript. Permite a los usuarios acortar enlaces y redirigirlos, almacenando la información en una base de datos PostgreSQL. Incluye validación de URLs, límites de uso y limpieza automática de enlaces antiguos.
+Erdl es una aplicación para acortar URLs desarrollada con Node.js, Express y TypeScript. Permite a los usuarios acortar enlaces y redirigirlos, almacenando la información en una base de datos PostgreSQL. Incluye validación de URLs, límites de uso y limpieza automática de enlaces antiguos.
 
 ---
 
