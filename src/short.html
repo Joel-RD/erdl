@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acortador de URLs</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group input::placeholder {
+            color: #adb5bd;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .result-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e1e5e9;
+        }
+
+        #result {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            color: #155724;
+            font-weight: 500;
+            display: none;
+        }
+
+        #result.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        #result a {
+            color: #0056b3;
+            text-decoration: none;
+            word-break: break-all;
+        }
+
+        #result a:hover {
+            text-decoration: underline;
+        }
+
+        #error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 12px;
+            padding: 15px;
+            color: #721c24;
+            font-weight: 500;
+            display: none;
+        }
+
+        #error.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .icon {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        .url-icon {
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23667eea' viewBox='0 0 24 24'%3E%3Cpath d='M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z'/%3E%3C/svg%3E") no-repeat center;
+            background-size: contain;
+        }
+
+        .tag-icon {
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23667eea' viewBox='0 0 24 24'%3E%3Cpath d='M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 2 2 2h11c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z'/%3E%3C/svg%3E") no-repeat center;
+            background-size: contain;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px 20px;
+                margin: 10px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .form-group input,
+            .submit-btn {
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔗 URL Shortener</h1>
+            <p>Acorta tus enlaces de forma rápida y sencilla</p>
+        </div>
+
+        <form id="shorten-form">
+            <div class="form-group">
+                <label for="orig_url">
+                    <span class="icon url-icon"></span>
+                    URL Original
+                </label>
+                <input type="url" id="orig_url" name="orig_url" placeholder="https://ejemplo.com/mi-enlace-muy-largo"
+                    required>
+            </div>
+
+
+            <button type="submit" class="submit-btn">
+                ✨ Acortar URL
+            </button>
+        </form>
+
+        <div class="result-section">
+            <div id="result"></div>
+            <div id="error"></div>
+        </div>
+    </div>
+
+    <script>
+        const domains = [
+            ".com", ".org", ".net", ".info", ".biz", ".name", ".pro", ".edu", ".gov", ".mil", ".int", ".mobi", ".aero", ".asia", ".cat", ".coop", ".jobs", ".museum", ".post", ".tel", ".travel", ".xxx", ".academy", ".accountant", ".contadores", ".actor", ".agency", ".airforce", ".amsterdam", ".apartments", ".app", ".archi", ".army", ".art", ".associates", ".attorney", ".auction", ".audio", ".baby", ".band", ".bar", ".bargains", ".beer", ".best", ".bid", ".bike", ".bingo", ".bio", ".black", ".blog", ".blue", ".boo", ".boutique", ".builders", ".business", ".buzz", ".cab", ".cafe", ".camera", ".camp", ".capetown", ".capital", ".cards", ".care", ".careers", ".casa", ".cash", ".casino", ".catering", ".center", ".ceo", ".charity", ".chat", ".cheap", ".church", ".city", ".claims", ".cleaning", ".clinic", ".clothing", ".cloud", ".club", ".coach", ".codes", ".coffee", ".community", ".company", ".computer", ".condos", ".construction", ".consulting", ".contacto", ".contractors", ".cooking", ".cool", ".country", ".coupons", ".courses", ".crédito", ".creditcard", ".cricket", ".cruises", ".dad", ".dance", ".date", ".dating", ".day", ".deals", ".degree", ".delivery", ".democrat", ".dental", ".dentist", ".design", ".dev", ".diamonds", ".digital", ".direct", ".directory", ".discount", ".doctor", ".dog", ".domains", ".download", ".durban", ".earth", ".eco", ".education", ".energy", ".engineer", ".engineering", ".enterprises", ".equipment", ".esq", ".estate", ".events", ".exchange", ".expert", ".exposed", ".express", ".fail", ".faith", ".family", ".fan", ".fans", ".farm", ".fashion", ".finance", ".financial", ".fish", ".fishing", ".fit", ".fitness", ".flights", ".florist", ".foo", ".football", ".forsale", ".foundation", ".fun", ".fund", ".furniture", ".futbol", ".fyi", ".gallery", ".games", ".gay", ".gifts", ".gives", ".glass", ".gmbh", ".gold", ".golf", ".graphics", ".gratis", ".green", ".gripe", ".group", ".guide", ".guru", ".hair", ".haus", ".health", ".healthcare", ".hockey", ".holdings", ".holiday", ".homes", ".horse", ".hospital", ".host", ".house", ".how", ".hn", ".hr", ".ht", ".hu", ".id", ".ie", ".il", ".im", ".in", ".io", ".iq", ".ir", ".is", ".it", ".je", ".jm", ".jo", ".jp", ".ke", ".kg", ".kh", ".ki", ".km", ".kn", ".kp", ".kr", ".kw", ".ky", ".kz", ".la", ".lb", ".lc", ".li", ".lk", ".lr", ".ls", ".lt", ".lu", ".lv", ".ly", ".ma", ".mc", ".md", ".me", ".mg", ".mh", ".mk", ".ml", ".mm", ".mn", ".mo", ".mp", ".mq", ".mr", ".ms", ".mt", ".mu", ".mv", ".mw", ".mx", ".my", ".mz", ".na", ".nc", ".ne", ".nf", ".ng", ".ni", ".nl", ".no", ".np", ".nr", ".nu", ".nz", ".om", ".pa", ".pe", ".pf", ".pg", ".ph", ".pk", ".pl", ".pm", ".pn", ".pr", ".ps", ".pt", ".pw", ".py", ".qa", ".re", ".ro", ".rs", ".ru", ".rw", ".sa", ".sb", ".sc", ".sd", ".se", ".sg", ".sh", ".si", ".sk", ".sl", ".sm", ".sn", ".so", ".sr", ".st", ".su", ".sv", ".sx", ".sy", ".sz", ".tc", ".td", ".tf", ".tg", ".th", ".tj", ".tk", ".tl", ".tm", ".tn", ".to", ".tr", ".tt", ".tv", ".tz", ".ua", ".ug", ".uk", ".us", ".uy", ".uz", ".va", ".vc", ".ve", ".vg", ".vi", ".vn", ".vu", ".wf", ".ws", ".ye", ".yt", ".za", ".zm", ".zw"
+        ];
+
+        function validateURL(url) {
+            if (!url) return false;
+            if (!/^https?:\/\//i.test(url)) return false;
+            const dominio = url.match(/^(?:https?:\/\/)?(?:www\.)?([^\/?#]+)/i)?.[1] || "";
+            const extensionDominio = dominio.includes('.')
+                ? '.' + dominio.split('.').pop()
+                : "";
+            return domains.includes(extensionDominio);
+        }
+
+        document.getElementById('shorten-form').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const resultEl = document.getElementById('result');
+            const errorEl = document.getElementById('error');
+
+            resultEl.textContent = '';
+            resultEl.classList.remove('show');
+            errorEl.textContent = '';
+            errorEl.classList.remove('show');
+
+            const orig_url = document.getElementById('orig_url').value;
+
+            if (!validateURL(orig_url)) {
+                errorEl.textContent = '❌ Ingresa una URL válida con un dominio permitido.';
+                errorEl.classList.add('show');
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/v1/short', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ orig_url })
+                });
+
+                let data;
+                try {
+                    data = await res.json();
+                } catch (jsonErr) {
+                    data = {};
+                }
+
+                if (res.status === 429) {
+                    errorEl.textContent = `❌ ${data.message || 'Has alcanzado el límite semanal de URLs acortadas.'}`;
+                    errorEl.classList.add('show');
+                } else if (data.url_acortada) {
+                    resultEl.innerHTML = `<strong>✅ URL acortada:</strong><br><a href="${data.url_acortada}" target="_blank">${data.url_acortada}</a>`;
+                    resultEl.classList.add('show');
+                } else if (data.error) {
+                    errorEl.textContent = `❌ ${data.error}`;
+                    errorEl.classList.add('show');
+                } else if (data.message) {
+                    errorEl.textContent = `❌ ${data.message}`;
+                    errorEl.classList.add('show');
+                } else {
+                    errorEl.textContent = `❌ Error desconocido.`;
+                    errorEl.classList.add('show');
+                }
+            } catch (err) {
+                errorEl.textContent = '❌ Error al conectar con el servidor.';
+                errorEl.classList.add('show');
+            }
+        });
+    </script>
+</body>
+
+</html>
