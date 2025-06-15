@@ -13,6 +13,7 @@ const corsOptions = {
   origin: DEPLOY_URL,
 }
 
+app.set('trust proxy', true)
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
