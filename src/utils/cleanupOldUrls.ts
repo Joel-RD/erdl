@@ -2,7 +2,7 @@ import { safeExecute } from "../models/db.js";
 
 setInterval(async () => {
     try {
-        const query = "select * from url_shortener WHERE created_at < NOW() - INTERVAL '3 day';"
+        const query = "select * from url_shortener WHERE created_at < NOW() - INTERVAL '1 min';"
         const result = await safeExecute(query);
 
         if (result.rowCount === 0) {
@@ -10,7 +10,7 @@ setInterval(async () => {
             return
         }
 
-        await safeExecute("DELETE FROM url_shortener WHERE created_at < NOW() - INTERVAL '3 day';");
+        await safeExecute("DELETE FROM url_shortener WHERE created_at < NOW() - INTERVAL '1 min';");
         console.log("Registros antiguos eliminados correctamente.");
     } catch (error) {
         console.error("Error al eliminar registros antiguos diario", error);
