@@ -11,7 +11,7 @@ export const redirectShort = rateLimit({
     if (req.query.id_short) {
       return req.query.id_short as string;
     }
-    return ipKeyGenerator(req.ip, 64);
+    return ipKeyGenerator(req.ip);
   }
 });
 
@@ -25,6 +25,6 @@ export const url_Short = rateLimit({
     if (req.query.id_short) {
       return req.query.id_short as string;
     }
-    return ipKeyGenerator(req.ip, 64);
+    return ipKeyGenerator(req.ip);
   }
 });
