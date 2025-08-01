@@ -1,17 +1,30 @@
-import { rateLimit } from 'express-rate-limit'
+import { rateLimit, ipKeyGenerator } from 'express-rate-limit'
+import { Request, Response } from 'express'
 
 export const redirectShort = rateLimit({
-    windowMs: 24 * 60 * 60 * 1000, // 1 día en milisegundos
+    windowMs: 24 * 60 * 60 * 1000,
     limit: 1000, 
-    standardHeaders: 'draft-8', 
+    standardHeaders: true, 
     legacyHeaders: false,
-    message: "Has alcanzado el límite diario de redirecciones. Por favor, inténtalo de nuevo mañana."
-})
+    message: "Has alcanzado el límite diario de redirecciones. Por favor, inténtalo de nuevo mañana.",
+    keyGenerator: (req: Request, res: Response): string => {
+    if (req.query.id_short) {
+      return req.query.id_short as string;
+    }
+    return ipKeyGenerator(req.ip, 64);
+  }
+});
 
 export const url_Short = rateLimit({
-    windowMs: 7 * 24 * 60 * 60 * 1000,
-    limit: 5, 
-    standardHeaders: 'draft-8', 
-    legacyHeaders: false,
-    message: "Has alcanzado el límite semanal de URLs acortadas. Por favor, inténtalo de nuevo la próxima semana."
-})
+  windowMs: 7 * 24 * 60 * 60 * 1000, // 1 semana
+  limit: 5,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: "Has alcanzado el límite semanal de URLs acortadas. Por favor, inténtalo de nuevo la próxima semana.",
+  keyGenerator: (req: Request, res: Response): string => {
+    if (req.query.id_short) {
+      return req.query.id_short as string;
+    }
+    return ipKeyGenerator(req.ip, 64);
+  }
+});
