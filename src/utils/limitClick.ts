@@ -1,4 +1,4 @@
-import { rateLimit, ipKeyGenerator } from 'express-rate-limit'
+import { rateLimit} from 'express-rate-limit'
 import { Request, Response } from 'express'
 
 export const redirectShort = rateLimit({
@@ -11,12 +11,12 @@ export const redirectShort = rateLimit({
     if (req.query.id_short) {
       return req.query.id_short as string;
     }
-    return ipKeyGenerator(req.ip);
+    return req.ip;
   }
 });
 
 export const url_Short = rateLimit({
-  windowMs: 7 * 24 * 60 * 60 * 1000, // 1 semana
+  windowMs: 7 * 24 * 60 * 60 * 1000, 
   limit: 5,
   standardHeaders: true,
   legacyHeaders: false,
@@ -25,6 +25,6 @@ export const url_Short = rateLimit({
     if (req.query.id_short) {
       return req.query.id_short as string;
     }
-    return ipKeyGenerator(req.ip);
+    return req.ip;
   }
 });
