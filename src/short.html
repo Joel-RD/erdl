@@ -261,10 +261,9 @@
 
         function validateURL(url) {
             if (!url) return false;
-            const pattern = /^https?:\/\/www\.[^\s/$.?#].[^\s]*$/i;
+            const pattern = /^https:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,}(\/[^\s]*)?$/;
             return pattern.test(url);
         }
-
 
         let originUrl_short = "";
         document.getElementById('shorten-form').addEventListener('submit', async function (e) {
@@ -284,12 +283,12 @@
 
             let machineId = localStorage.getItem('machineId');
             if (!machineId) {
-                machineId = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                machineId = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
                     const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
                     return v.toString(16);
                 });
                 localStorage.setItem('machineId', machineId);
-            }            if (!validateURL(orig_url)) {
+            } if (!validateURL(orig_url)) {
                 errorEl.textContent = '❌ Ingresa una URL válida con un dominio permitido.';
                 errorEl.classList.add('show');
                 return;
