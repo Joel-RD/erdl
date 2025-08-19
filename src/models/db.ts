@@ -1,6 +1,6 @@
 import pg from "pg";
 import { config } from "../config/config.js"
-import { errorHandles } from "../utils/errorHandler.js";
+import { errorHandler } from "../utils/errorHandler.js";
 
 const { Pool } = pg;
 const { CONNECTION_DB } = config;
@@ -26,4 +26,4 @@ const execute = async (sql: string, params?: unknown[]) => {
     return result;
 }
 
-export const safeExecute = errorHandles(execute)
+export const safeExecute = errorHandler(execute)

@@ -1,5 +1,5 @@
-import {safeShort} from "../controller/shortener_controllers.js"
-import { url_Short } from "../utils/limitClick.js";
+import { safeShort } from "../controller/shortener_controller.js"
+import { url_Short } from "../utils/limitClicks.js";
 import express from "express";
 
 const router = express.Router();

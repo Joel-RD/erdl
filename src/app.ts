@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
 import loger from "morgan";
-import redirect from "../src/routers/home_routes.js"
+import redirect from "./routers/home_route.js"
 import shortRouter from "../src/routers/short_router.js"
 import "./utils/cleanupOldUrls.js";
 import path from "path";
