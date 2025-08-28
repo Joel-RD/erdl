@@ -22,12 +22,7 @@ app.use(loger("dev"))
 app.use(redirect);
 app.use("/api/v1/", shortRouter);
 
-app.get("/", (req: Request, res: Response) => {
-  res.sendFile(path.join(process.cwd(), "src/short.html"));
-});
-
 app.use((req: Request, res: Response, next: NextFunction) => {
-  res.status(400).sendFile(path.join(process.cwd(), "src/error.html"))
-});
-
+  res.status(404).sendFile(path.join(process.cwd(), "src/error.html"));
+});  
 export default app;
