@@ -1,5 +1,5 @@
 import { createHash } from "crypto";
-import { safeValidateURL } from "./validateURl.js"
+import { safeValidateURL } from "./validateURL.js"
 
 const BASE62 = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 

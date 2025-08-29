@@ -1,4 +1,4 @@
-export const errorHandles = (fn: Function) => {
+export const errorHandler = (fn: Function) => {
     return function (...args: unknown[]) {
         try {
             return fn(...args);

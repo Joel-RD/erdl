@@ -1,9 +1,9 @@
 import express, { Request, Response } from 'express';
 import { nanoid } from 'nanoid';
 import { safeExecute } from "../models/db.js";
-import { safeValidateURL } from '../utils/validateURl.js';
-import { errorHandles } from '../utils/errorHandler.js';
-import { hashSmall } from "../utils/smalID.js"
+import { safeValidateURL } from '../utils/validateURL.js';
+import { errorHandler } from '../utils/errorHandler.js';
+import { hashSmall } from "../utils/smallID.js"
 import { config } from "../config/config.js"
 
 const router = express();
@@ -59,5 +59,5 @@ const redirectURl = async (req: Request, res: Response): Promise<void> => {
 }
 
 
-export const safeShort = errorHandles(short)
-export const safeRedirectURl = errorHandles(redirectURl)
+export const safeShort = errorHandler(short)
+export const safeRedirectURl = errorHandler(redirectURl)

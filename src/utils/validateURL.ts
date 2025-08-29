@@ -1,4 +1,4 @@
-import { errorHandles } from "../utils/errorHandler.js"
+import { errorHandler } from "./errorHandler.js"
 
 const validateURL = (url: string) => {
     if (!url) return false;
@@ -6,4 +6,4 @@ const validateURL = (url: string) => {
     return pattern.test(url);
 }
 
-export const safeValidateURL = errorHandles(validateURL);
+export const safeValidateURL = errorHandler(validateURL);
