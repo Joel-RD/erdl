@@ -13,7 +13,8 @@ const {
     PORT = 7261,
     APP_PROTOCOL,
     APP_DOMAIN,
-    APP_SUBDOMAIN
+    APP_SUBDOMAIN,
+    FRONTEND_URL
 } = process.env;
 
 
@@ -34,5 +35,6 @@ export const config = {
     URL_LOCAl: `${BASE_URL}${PORT}`,
     PORT_SERVER: PORT,
     BASE_URL: BASE_URL,
-    DEPLOY_URL: NODE_ENV === "Production" ? `${APP_PROTOCOL}://${APP_SUBDOMAIN}.${APP_DOMAIN}` : `http://localhost:${PORT}`
+    DEPLOY_URL: NODE_ENV === "Production" ? `${APP_PROTOCOL}://${APP_SUBDOMAIN}.${APP_DOMAIN}` : `http://localhost:${PORT}`,
+    DEPLOY_URL_FRONTEND: FRONTEND_URL
 }

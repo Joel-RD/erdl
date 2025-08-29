@@ -7,10 +7,11 @@ import path from "path";
 import cors from "cors"
 import {config} from "./config/config.js"
 
-const {DEPLOY_URL} = config;
+const {DEPLOY_URL, DEPLOY_URL_FRONTEND} = config;
+const allowedOrigins = [DEPLOY_URL, DEPLOY_URL_FRONTEND];
 const app = express();
 const corsOptions = {
-  origin: DEPLOY_URL,
+  origin: allowedOrigins,
 }
 
 app.set('trust proxy', true)
