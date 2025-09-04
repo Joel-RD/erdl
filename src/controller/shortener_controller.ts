@@ -4,6 +4,7 @@ import { safeValidateURL } from '../utils/validateURL.js';
 import { errorHandler } from '../utils/errorHandler.js';
 import { hashSmall } from "../utils/smallID.js"
 import { config } from "../config/config.js"
+import path from 'path';
 
 const router = express();
 const { BASE_URL, PORT_SERVER, DEPLOY_URL } = config;
@@ -47,7 +48,7 @@ const redirectURl = async (req: Request, res: Response): Promise<string> => {
     const result = await consult(query, params);
 
     if (!result || !result.rows || result.rows.length === 0) {
-        res.status(404).json("url provided does not exist");
+        res.status(404).sendFile(path.join(process.cwd(), 'src', 'error.html'));
         return;
     }
 
