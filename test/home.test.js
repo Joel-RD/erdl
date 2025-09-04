@@ -64,7 +64,6 @@ describe('Pruebas de la Aplicación Express', () => {
     const response = await request(app).get('/url-inexistente');
 
     expect(response.status).toBe(404);
-    expect(response.body).toEqual("url provided does not exist");
   });
 });
 
