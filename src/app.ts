@@ -7,10 +7,11 @@ import path from "path";
 import cors from "cors"
 import {config} from "./config/config.js"
 
-const {DEPLOY_URL} = config;
+const {DEPLOY_URL, DEPLOY_URL_FRONTEND} = config;
+const allowedOrigins = [DEPLOY_URL, DEPLOY_URL_FRONTEND];
 const app = express();
 const corsOptions = {
-  origin: DEPLOY_URL,
+  origin: allowedOrigins,
 }
 
 app.set('trust proxy', true)
@@ -22,12 +23,7 @@ app.use(loger("dev"))
 app.use(redirect);
 app.use("/api/v1/", shortRouter);
 
-app.get("/", (req: Request, res: Response) => {
-  res.sendFile(path.join(process.cwd(), "src/short.html"));
-});
-
 app.use((req: Request, res: Response, next: NextFunction) => {
-  res.status(400).sendFile(path.join(process.cwd(), "src/error.html"))
-});
-
+  res.status(404).sendFile(path.join(process.cwd(), "src/error.html"));
+});  
 export default app;

@@ -1,29 +1,13 @@
-import pg from "pg";
-import { config } from "../config/config.js"
+import { createClient } from "@libsql/client";
 import { errorHandler } from "../utils/errorHandler.js";
+import { config } from "../config/config.js";
 
-const { Pool } = pg;
 const { CONNECTION_DB } = config;
-
-const connection = async () => {
+const db = createClient(CONNECTION_DB);
+export const consult = async (query: string, params: any[] = []) => {
     try {
-        console.log("Database connected.")
-        return new Pool({
-            connectionString: CONNECTION_DB
-        })
+        return await db.execute(query, params);
     } catch (error) {
-        console.log("DB connection error: ", error);
+        errorHandler(error);
     }
 }
-
-const pool = connection();
-
-const execute = async (sql: string, params?: unknown[]) => {
-    if (!sql) {
-        throw new Error("El parámetro 'sql' es obligatorio para ejecutar la consulta.");
-    }
-    const result = (await pool).query(sql, params);
-    return result;
-}
-
-export const safeExecute = errorHandler(execute)

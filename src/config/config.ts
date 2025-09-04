@@ -1,25 +1,40 @@
 import dotenv from "dotenv";
+import path from "path";
 
 dotenv.config();
 
 const {
+    ABSOLUTE_PATH_DB,
+    TURSO_DB_AUTH_TOKEN,
     NODE_ENV,
     BASE_URL,
     LOCAL_DB,
-    CLOUD_DB,
+    TURSO_DB,
     PORT = 7261,
     APP_PROTOCOL,
     APP_DOMAIN,
-    APP_SUBDOMAIN
+    APP_SUBDOMAIN,
+    FRONTEND_URL
 } = process.env;
 
-let DATABASE_DB: string;
-DATABASE_DB = NODE_ENV !== "Production" ? LOCAL_DB : CLOUD_DB;
+
+const database_db = () => {
+    if (NODE_ENV !== "Production") {
+        return {
+            url: `file:${path.join(ABSOLUTE_PATH_DB, LOCAL_DB)}`,
+        }
+    }
+    return {
+        url: TURSO_DB,
+        authToken: TURSO_DB_AUTH_TOKEN
+    }
+}
 
 export const config = {
-    CONNECTION_DB: DATABASE_DB,
+    CONNECTION_DB: database_db(),
     URL_LOCAl: `${BASE_URL}${PORT}`,
     PORT_SERVER: PORT,
     BASE_URL: BASE_URL,
-    DEPLOY_URL: NODE_ENV === "Production" ? `${APP_PROTOCOL}://${APP_SUBDOMAIN}.${APP_DOMAIN}` : `http://localhost:${PORT}`
+    DEPLOY_URL: NODE_ENV === "Production" ? `${APP_PROTOCOL}://${APP_SUBDOMAIN}.${APP_DOMAIN}` : `http://localhost:${PORT}`,
+    DEPLOY_URL_FRONTEND: FRONTEND_URL
 }
