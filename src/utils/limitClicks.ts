@@ -3,7 +3,7 @@ import { Request, Response } from 'express'
 
 export const redirectShort = rateLimit({
     windowMs: 24 * 60 * 60 * 1000,
-    limit: 1000, 
+    limit: 1200, 
     standardHeaders: true, 
     legacyHeaders: false,
     message: "Has alcanzado el límite diario de redirecciones. Por favor, inténtalo de nuevo mañana.",
